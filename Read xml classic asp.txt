@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+    <head>
+        <title>Richard Test</title>
+        <meta name="author" content="">
+        <meta name="description" content="">
+        <meta name="keywords" content="">
+    <style>
+        body {background-color: black;color:rgb(17, 216, 17);font-family: courier;font-size:8pt}a {color:     #68FFC8;}a:hover {color: #68dcff;}a:active{color: white;}a:visited{color:#46dc44;}
+    </style>
+ 
+    </head>
+    <body leftmargin=0 marginwidth=0 topmargin=0 marginheight=0 bgcolor="#ffffff">
+ 
+ 
+        <%
+        dim xmlText:xmlText=""
+        if false then
+            Response.Write("readservice start<br>")
+            Set getPage = Server.CreateObject("Microsoft.XMLHTTP" )
+            getPage.Open "POST", "http://localhost/parsexmltry/xml.xml", false
+            getPage.SetRequestHeader "Content-Type", "text/xml; charset=utf-8"
+            getPage.Send "some data here..."
+            xmlText = getPage.responseText
+            Response.Write("<pre>"&xmlText&"</pre>")
+            Set getPage = Nothing
+            Response.Write("readservice end<br>")
+        end if
+         
+        ReadData(xmlText)  ''getPage.responseText
+ 
+        Function ReadData(xmlString)
+            Response.Write("ReadData start<br>")
+            Dim xmldoc 
+            'Use the MSXML 4.0 Version dependent PROGID 
+            'MSXML2.DOMDocument.4.0 if you wish to create
+            'an instance of the MSXML 4.0 DOMDocument object
+              
+            Set xmldoc = Server.CreateObject("MSXML2.DOMDocument") 
+ 
+            Response.Write("loadxml start<br>")
+             
+            ' for calling local XML
+            xmldoc.Load Server.MapPath("xml.xml")  'this is used for reading an xml text file
+            'xmldoc.LoadXML xmlString  'this is used for reading an xml string
+ 
+            Response.Write("loadxml end<br>")
+             
+            if xmldoc.parseerror.errorcode <> 0 then 
+                Response.Write "Error loading XML Document :" & "<BR>"
+                Response.Write "----------------------------" & "<BR>"
+                Response.Write "Error Code : " & xmldoc.parseerror.errorcode & "<BR>"
+                Response.Write "Reason : " & xmldoc.parseerror.reason & "<BR>"
+                Response.End
+            End If
+             
+            'debugger
+                             
+ 
+            dim supplierNodes: set supplierNodes = xmldoc.selectNodes("//Products/Product")
+            Response.Write("num suppliers ["&supplierNodes.length&"]<br>")
+            dim scan:scan=0
+            dim baseNode
+            for scan=0 to supplierNodes.length-1
+                set baseNode =      supplierNodes(scan)
+                if not (baseNode Is Nothing) then
+                    response.Write("ProductCode [" &  baseNode.selectSingleNode("ProductCode").text &"]<br>")
+                    response.Write("ProductName [" &  baseNode.selectSingleNode("ProductName").text &"]<br>")
+                   '' response.Write("ContractEmail [" & baseNode.selectSingleNode("ContractEmail").text &"]<br>")
+                 
+ 
+                else
+                    response.Write(" basenode missing<br>")
+                end if
+            next
+            Response.Write("ReadData end<br>")
+ 
+        End Function
+        Function GetXML(URL)
+          Dim oXMLHttp
+          Dim oADORec
+          Dim sXML
+          'Dim URL
+          
+          Set oXMLHttp = Server.CreateObject("MSXML2.ServerXMLHTTP")
+          oXMLHttp.open "GET", URL, false
+          oXMLHttp.send()                   ' Send the request.
+          if oXMLHttp.status = 200 Then
+            sXML = oXMLHttp.responseText   ' Retrieve from serverB.
+            if ucase(trim(mid(sXML,1,6))) <> "XMLERR" then
+              GetXML = sXML
+            else
+              GetXML = "Err: " & Trim(mid(sXML,7,40))
+                end if
+          else
+            GetXML = "Could not get XML data."
+          end if
+          set oXMLHttp = nothing
+        end function
+             
+        %>
+ 
+      
+    </body>
+</html>

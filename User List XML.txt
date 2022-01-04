@@ -1,0 +1,9 @@
+
+Create Proc spUserList
+as
+
+select * from Users for xml path('user'), root('users')
+
+GO
+
+EXEC spUserList

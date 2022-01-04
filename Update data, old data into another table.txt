@@ -1,0 +1,33 @@
+--Create Trigger tr_CustomerUpdate
+--on CustomerDetails 
+--After Update
+--as
+--Begin
+--Insert Into tryupdate (name,country) 
+--Select i.name, i.country from inserted i
+--Inner join deleted d on i.customerid = d.customerid
+--End
+
+
+------https://stackoverflow.com/questions/3181305/trigger-insert-old-values-values-that-was-updated/3181410
+
+-------------NEW---------------------
+
+USE [TestDB]
+GO
+/****** Object:  Trigger [dbo].[tr_CustomerUpdate]    Script Date: 02-Dec-21 1:54:12 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER Trigger [dbo].[tr_CustomerUpdate]
+on [dbo].[CustomerDetails] 
+After Update
+as
+Begin
+Insert Into tryupdate (name,country) 
+Select d.name, d.country from deleted d
+Inner join inserted i on i.customerid = d.customerid
+End
+
+

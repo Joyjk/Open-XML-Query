@@ -1,0 +1,23 @@
+/****** Script for SelectTopNRows command from SSMS  ******/
+SELECT TOP (1000) [pt_id]
+      ,[parts_name]
+      ,[parts_id_sku]
+  FROM [InventorySystem].[dbo].[PartsSupplier]
+
+
+
+  Select PartsSupplier.parts_name, PartsSupplier.parts_id_sku, Stock.parts_id, Stock.quantity
+  from PartsSupplier, Stock
+  where PartsSupplier.parts_id_sku = Stock.parts_id 
+
+
+  select Parts.name, Parts.parts_id_sku from Parts,Stock where Stock.parts_id = Parts.parts_id_sku
+
+  select * from Parts
+  select * from Stock
+  select Stock.parts_id, Stock.quantity, Parts.parts_id_sku, Parts.name  from Stock, Parts
+  where Stock.parts_id = Parts.parts_id_sku 
+
+
+  Select Stock.parts_id, Stock.quantity from Stock,PurchaseTwo
+  where Stock.parts_id = PurchaseTwo.parts_id 

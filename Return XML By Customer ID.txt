@@ -1,0 +1,11 @@
+Create Proc spCustomerById @c_id int
+AS
+
+SELECT * FROM CustomerDetails 
+where customerid=@c_id
+FOR XML PATH('customer')
+
+GO
+
+
+EXEC spCustomerById @c_id= 2

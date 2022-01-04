@@ -1,0 +1,42 @@
+Declare @hdoc int
+Declare @Doc xml
+
+Set @Doc = '<purchase><part_id>19590</part_id><supplier_id>2</supplier_id><supervisor_id>9</supervisor_id><quantity>342</quantity></purchase>'
+
+ExEC sp_xml_prepareDocument @hdoc output, @Doc
+
+Select @hdoc
+
+
+
+Declare @idoc int, @cname varchar(max)
+Set @idoc = 1
+
+--insert into PurchaseThree (parts_id,supplier_id,quantity,supervisor_id) 
+----purchase
+-- SELECT * FROM Openxml(@idoc, '/purchase',3)
+--WITH (
+--	part_id int ,
+--	supplier_id int ,
+--	quantity int,
+--	supervisor_id int
+	
+	 
+--)
+
+
+--Stock table
+Update Stock Set quantity = d.quantity
+ --SELECT d.parts_id, d.update_quantity 
+ FROM Openxml(@idoc, '/purchase',3)
+WITH (
+
+	part_id int,
+	quantity int
+
+)d
+Where Stock.parts_id = d.part_id
+
+
+
+

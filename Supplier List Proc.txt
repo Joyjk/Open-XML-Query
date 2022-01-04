@@ -1,0 +1,8 @@
+Create Proc spSuppliersList
+as
+
+select * from Supplier for xml path('supplier'), root('suppliers')
+
+GO
+
+EXEC spSuppliersList

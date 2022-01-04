@@ -1,0 +1,9 @@
+
+Create Proc spSumOfStock 
+as
+
+SELECT   SUM(Stock.quantity) as sum_quantity  from Stock FOR  XML PATH('Stoke'), ROOT('Stokes')
+
+GO
+
+EXEC spSumOfStock

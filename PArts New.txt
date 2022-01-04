@@ -1,0 +1,3 @@
+
+select Stock.parts_id, Stock.quantity, PurchaseTwo.parts_id, PartsSupplier.parts_name from Stock,PurchaseTwo,PartsSupplier 
+where Stock.parts_id = PurchaseTwo.parts_id and PurchaseTwo.parts_id = PartsSupplier.parts_id_sku

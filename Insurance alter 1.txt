@@ -1,0 +1,41 @@
+Alter proc sp_insurance_get @filter varchar(MAX)  
+as  
+  
+exec('  
+select LCM_INSSURANCECOM, LCM_INSSURANCECOMADD, LCM_INSSURANCECOMNOTENO as coverNote, LCM_INSSURANCECOMPH, CONVERT( varchar,LCM_INSSURANCEDATE,103) as Date,  
+isnull(lccm.lcm_Bankno,(isnull(lccm.TT_Number,''NA''))) as TT_No, LCM_BANKNO, LCM_PREMIUMVALUE as PremiumValueBD,  
+  
+LCM_PIValue as Amount,  
+  
+(select BankName from embro.dbo.cbm_bank where BankID = lccm.LCM_COMPANYBANK_ID) as BankName,  
+  
+(select DESCRIPTION from  embro.dbo.basiccoa where ID = lccm.LCM_VENDOR_ID) as SupplierName,  
+ LTRIM(RTRIM((Select currencyName from embro.dbo.tbl_Currency_Setup where ID = lccm.Currency))) as currency,  
+(select Companyname from Embro.dbo.CompanyInfo where CompanyID = lccm.LCM_COMPANY_ID) as CompanyName,   
+  
+(Select UserName from User_Setup where ID = lccm.LCM_MODUSERID) as Creator  
+  
+  
+from LC_CM_CASH_MASTER lccm' +' '+@filter +' '+  
+  
+'for xml raw(''BTB''), root(''Root'') ')  
+
+
+---select * from embro.dbo.basiccoa
+
+select LCM_VENDOR_ID , LCM_COMPANY_ID, LCM_BANKNO
+,(select Description from embro.dbo.basiccoa where ID = lccm.LCM_VENDOR_ID) as Supplier,
+(select Companyname from  Embro.dbo.CompanyInfo where CompanyID = lccm.LCM_COMPANY_ID) as CompanyName
+
+from  LC_CM_CASH_MASTER lccm -- group by LCM_VENDOR_ID, LCM_COMPANY_ID having LCM_COMPANY_ID = 183
+
+select LCM_VENDOR_ID , LCM_COMPANY_ID, LCM_BANKNO as LCNo from  LC_CM_CASH_MASTER lccm 
+
+select Lcm_vendor_id from  LC_CM_CASH_MASTER lccm 
+
+select * from Embro.dbo.CompanyInfo
+
+select * from LC_CM_CASH_MASTER where ISFDD = 1
+select LCM_INSSURANCECOM from LC_CM_CASH_MASTER where LCM_INSSURANCECOM = 'Sonar Bangla Insurance Limited'
+   
+  

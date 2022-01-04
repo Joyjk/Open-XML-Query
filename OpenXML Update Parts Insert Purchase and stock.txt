@@ -1,0 +1,56 @@
+Create Proc spUpdatePartPurchaseStock @dataxml xml
+as
+
+Declare @hdoc int
+Declare @Doc xml
+
+Set @Doc = @dataxml
+
+ExEC sp_xml_prepareDocument @hdoc output, @Doc
+
+Select @hdoc
+
+
+
+Declare @idoc int, @cname varchar(max)
+Set @idoc = 1
+
+insert into Purchase 
+--purchase table
+ SELECT * FROM Openxml(@idoc, '/purchase',3)
+WITH (
+	parts_id int ,
+	supplier_id int ,
+	quantity int,
+	cost varchar(MAX),
+	user_id int
+)
+
+
+insert into Stock 
+--stock table
+ SELECT * FROM Openxml(@idoc, '/purchase',3)
+WITH (
+
+	quantity int,
+	parts_id int
+
+)
+
+--parts table
+Update Parts Set quantity = d.update_quantity
+ --SELECT d.parts_id, d.update_quantity 
+ FROM Openxml(@idoc, '/purchase',3)
+WITH (
+
+	parts_id int,
+	update_quantity int
+
+)d
+Where Parts.parts_id = d.parts_id
+
+Go
+
+
+
+----https://stackoverflow.com/questions/40758583/sql-update-table-with-openxml

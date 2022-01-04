@@ -1,0 +1,30 @@
+--Create Proc spUserReg @dataxml xml
+--AS
+--Declare @hdoc int
+--Declare @Doc xml
+
+--Set @Doc = @dataxml
+
+--ExEC sp_xml_prepareDocument @hdoc output, @Doc
+
+--Select @hdoc
+
+
+
+
+--Declare @idoc int
+--Set @idoc = 1
+
+--insert into Users 
+
+--Select t.name, t.roll, t.password  from OPENXML(@idoc,'/user',3)
+--with(
+--	name nvarchar(50),
+--	roll nvarchar(50),
+--	password nvarchar(50)
+--)t
+
+--Go
+
+
+EXEC spUserReg @dataxml='<user><name>ttttt</name><roll>supervisor</roll><password>999667</password></user>'

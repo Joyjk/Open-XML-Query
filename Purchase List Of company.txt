@@ -1,0 +1,10 @@
+ Create Procedure spPurchaseDetailsALL
+  as
+  SELECT Purchase.purchase_id, Purchase.parts_id, Parts.name, Purchase.supplier_id, 
+  Supplier.name, Purchase.quantity, Purchase.cost, Purchase.user_id,
+  Users.name from Purchase,Parts,Supplier, Users 
+  Where Purchase.parts_id = Parts.parts_id AND 
+  Purchase.supplier_id = Supplier.supplier_id AND Purchase.user_id = Users.user_id FOR XML PATH('purchase'), ROOT('purchases')
+  GO
+
+  EXEC spPurchaseDetailsALL

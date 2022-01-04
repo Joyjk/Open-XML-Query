@@ -1,0 +1,53 @@
+--/****** Script for SelectTopNRows command from SSMS  ******/
+--SELECT TOP (1000) [product_id]
+      
+--      ,[cost]
+--      ,[quantity]
+--      ,[parts_id]
+--      ,[sku]
+--  FROM [InventorySystem].[dbo].[Product]
+
+
+Declare @hdoc int
+Declare @Doc xml
+
+Set @Doc = '<producttbl><parts><part><product_name>Computer</product_name><quantity>5</quantity><parts_id>63</parts_id><sku>667</sku></part><part><product_name>Computer</product_name><quantity>5</quantity><parts_id>14</parts_id><sku>667</sku></part></parts></producttbl>'
+
+
+ExEC sp_xml_prepareDocument @hdoc output, @Doc
+
+Select @hdoc
+
+
+
+
+Declare @idoc int
+Set @idoc = 1
+
+--insert into Product (name, quantity, parts_id, sku)
+
+----select quantity from Stock where parts_id IN(63,14)
+
+--Select *  from OPENXML(@idoc,'/producttbl/parts/part',3)
+--with(
+--	product_name nvarchar(MAX),
+--	quantity int,
+--	parts_id int,
+--	sku int
+	
+
+--)t
+
+Update Stock Set quantity = d.quantity
+ --SELECT d.parts_id, d.update_quantity 
+ FROM Openxml(@idoc, '/producttbl/parts/part',3)
+WITH (
+
+	parts_id int,
+	quantity int
+
+)d
+Where Stock.parts_id = d.parts_id
+
+
+

@@ -1,0 +1,28 @@
+Declare @hdoc int
+Declare @Doc xml
+
+Set @Doc = '<parts><name>gggggg</name><price>777</price><quantity>8</quantity><maker_id>2</maker_id></parts>'
+
+
+ExEC sp_xml_prepareDocument @hdoc output, @Doc
+
+Select @hdoc
+
+
+
+
+Declare @idoc int
+Set @idoc = 1
+
+insert into Parts 
+
+Select t.name, t.price, t.quantity, t.maker_id  from OPENXML(@idoc,'/parts',3)
+with(
+	name nvarchar(50),
+	price nvarchar(50),
+	quantity int,
+	maker_id int
+)t
+
+
+

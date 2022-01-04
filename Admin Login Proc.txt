@@ -1,0 +1,27 @@
+Create Proc spAdminLoginProc @dataxml xml
+as
+
+Declare @hdoc int
+Declare @Doc xml
+
+Set @Doc = @dataxml
+
+ExEC sp_xml_prepareDocument @hdoc output, @Doc
+
+Select @hdoc
+
+Declare @idoc int, @s_name nvarchar(50), @s_roll nvarchar(50), @s_pass nvarchar(50)
+Set @idoc = 1
+
+Select @s_name= t.name, @s_roll = t.roll, @s_pass= t.password from OPENXML(@idoc,'/user',3)
+With(
+	name nvarchar(50),
+	roll nvarchar(50),
+	password nvarchar(50)
+)t
+
+
+
+Select name,roll from Users where name = @s_name and password = @s_pass and roll = @s_roll FOR XML PATH('user'),Root('users')
+
+Go

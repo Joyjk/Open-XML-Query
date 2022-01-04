@@ -1,0 +1,12 @@
+
+
+SELECT purchase.parts_id,
+	SUM(convert ( INT, Purchase.cost)) AS sumCost, 
+	--purchase.quantity
+  SUM([Purchase].quantity) as SumQTY
+  from Purchase,Parts,Supplier, Users 
+  Where Purchase.parts_id = Parts.parts_id AND 
+  Purchase.supplier_id = Supplier.supplier_id AND Purchase.user_id = Users.user_id AND Purchase.parts_id = 4
+  GROUP BY Purchase.parts_id
+  
+  FOR XML PATH('purchase'), Root('purchases')

@@ -1,0 +1,8 @@
+--Create Proc spPartsDetails
+--as
+--  SELECT Parts.name, Parts.price, Parts.quantity, Supplier.name as supplier_name from Parts,Supplier 
+--  where Parts.maker_id=Supplier.supplier_id 
+--  FOR XML PATH('part'),Root('parts');
+--GO
+
+EXEC spPartsDetails

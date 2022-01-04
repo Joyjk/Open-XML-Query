@@ -1,0 +1,6 @@
+
+Create Proc spDeletePart @p_id int
+as
+  DELETE Parts WHERE parts_id = @p_id
+Go
+EXEC spDespDeletePart @p_id = 2

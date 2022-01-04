@@ -1,0 +1,35 @@
+
+
+<%
+Dim oXMLHttp
+Dim oADORec
+Dim sXML
+'Dim URL
+Set oXMLHttp = Server.CreateObject("MSXML2.ServerXMLHTTP")
+oXMLHttp.open "GET", "http://localhost/trydropdown/retrivedata.asp", false
+oXMLHttp.send() ' Send the request.
+'Response.ContentType = "text/xml"
+if oXMLHttp.status = 200 Then
+sXML = oXMLHttp.responseText' Retrieve from serverB.
+if ucase(trim(mid(sXML,1,6))) <> "XMLERR" then
+GetXML = sXML
+else
+GetXML = "Err: " & Trim(mid(sXML,7,40))
+end if
+else
+GetXML = "Could not get XML data."
+end if
+Response.Write(GetXML)
+
+
+Dim data 
+'Set data = GetXML.selectNodes("Customers")
+'Set Node = GetXML.documentElement.selectSingleNode("Customers/Customer")
+'Response.Write(GetXML.selectSingleNode("ProductCode").text)
+
+
+
+
+set oXMLHttp = nothing
+
+%>

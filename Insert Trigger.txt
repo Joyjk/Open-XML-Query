@@ -1,0 +1,19 @@
+--create trigger tr_insertCustomer 
+--on CustomerDetails
+--AFTER  INSERT	
+--AS
+--BEGIN
+--	SET NOCOUNT ON;
+--	DECLARE @cid int
+
+--	Select @cid = inserted.customerid
+--	from inserted
+
+--	Insert into tryInsert 
+--	Values (@cid)
+
+--END
+
+
+
+

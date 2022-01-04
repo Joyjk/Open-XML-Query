@@ -1,0 +1,5 @@
+select LCM_VENDOR_ID , LCM_COMPANY_ID
+,(select Description from embro.dbo.basiccoa where ID = lccm.LCM_VENDOR_ID) as Supplier,
+(select Companyname from  Embro.dbo.CompanyInfo where CompanyID = lccm.LCM_COMPANY_ID) as CompanyName
+
+from  LC_CM_CASH_MASTER lccm  group by LCM_VENDOR_ID, LCM_COMPANY_ID having LCM_COMPANY_ID = 183

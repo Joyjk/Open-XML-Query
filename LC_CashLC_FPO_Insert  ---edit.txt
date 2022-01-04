@@ -1,0 +1,168 @@
+----sp_helpText 'LC_CashLC_FPO_Insert'
+
+
+
+  
+                
+                                  
+                                    
+                                    
+Alter PROCEDURE [dbo].[LC_CashLC_FPO_Insert]                                    
+ @Doc xml                                    
+AS              
+BEGIN TRANSACTION;      
+      
+BEGIN TRY      
+                            
+BEGIN                                    
+ SET NOCOUNT ON;                               
+                               
+-- DECLARE @Doc xml                              
+-- SET @Doc = '<XMLDOC>                              
+--  <LCNumber>59</LCNumber>                              
+--  <POXML>                              
+--    <PurchaseOrder VPIDATE="22/01/2011" VPI="52" Rate="650" Quantity="100" CurrencyID="15" ConversionRate="650">602</PurchaseOrder>                              
+--  </POXML>                              
+--  <MLCID>0</MLCID>                              
+--  <MOD_Date>01/01/01</MOD_Date>                              
+--  <MOD_User>11</MOD_User>                              
+--  <SupplierID>1767</SupplierID>                              
+--  <ItemID>1598</ItemID>                              
+--  <ContractNO>59</ContractNO>                              
+--  <Company>183</Company>                              
+--  <Bank>46</Bank>                              
+--  <Account>1904</Account>                              
+--  <HSCode>59</HSCode>                              
+--  <PlcIssue>16</PlcIssue>                              
+--  <ISSUE-DATE>17/02/2011</ISSUE-DATE>                              
+--  <PlcExpiry>16</PlcExpiry>                              
+--  <EXP-DATE>09/02/2011</EXP-DATE>                              
+--  <LCConditions>1</LCConditions>                              
+--  <LCANo />                              
+--  <InsuranceCom />                              
+--  <InsuranceCoAdd />                              
+--  <IRCNo />                              
+--  <InsurranceCovNote />                              
+--  <PointOfDischarge />                              
+--  <PortOfShipment />                              
+--  <ModeOfShipment />                              
+--  <CMNT />                              
+--  <Currency>2</Currency>                              
+--  <Submit>Save Cash L/C</Submit>                              
+--</XMLDOC>'                                   
+--                                    
+ SET DATEFORMAT dmy;                                    
+                                     
+ Declare @idoc int                                                  
+                                    
+ EXEC sp_xml_preparedocument @idoc OUTPUT, @Doc                                        
+      
+      
+              
+ INSERT INTO LC_CM_CASH_MASTER (                                       
+        LCM_CODE,LCM_MODUSERID,LCM_LASTMODDATE,LCM_VENDOR_ID,LCM_COMPANY_ID,LCM_COMPANYBANK_ID                            
+,LCM_BANKACCOUNTID                                    
+       ,LCM_ISSUANCECITYID,LCM_DATEOFISSUANCE,LCM_EXPIRYCITYID,LCM_DATEOFEXPIRY,LCM_LCCONDITION,LCM_LCANO                                    
+       ,LCM_IRCNO,LCM_TIN,LCM_VAT,LCM_INSSURANCECOM,LCM_INSSURANCECOMADD,LCM_INSSURANCECOMNOTENO,[LCM_INSSURANCEDATE],[LCM_PREMIUMVALUE],[LCM_PREMIUMCURRENCY],  
+    LCM_HSCODE,HSODE_ID,LCM_PORTOFDISSCHARGE,LCM_CREATIONDATE,LCM_CREATIONUSERID,LCM_SPECIALCOMMENTS,LCM_ITEMID,LCM_MODOFSHIPMENT,LCM_PORTOFSHIPMENT ,LCM_DATEOFSHIPMENT,LCM_CONTRY_ORIGIN,LCM_PIValue,LOM_ID   
+    ,Currency,LCM_PAYMENT_MOD,LCM_FREIGHT_TERM,LCM_NEGOTIATION_TERM,LCM_PARTIAL_SHIPMENT,LCM_TRANS_SHIPMENT,LCM_BIN_NO  ,LCM_INSSURANCECOMPH,LCM_GRM_QTY,LCM_GRM_QTY_Number,LMT_ID, P_Days)                                    
+ SELECT LCM_CODE,LCM_MODUSERID,LCM_LASTMODDATE,LCM_VENDOR_ID,LCM_COMPANY_ID,LCM_COMPANYBANK_ID,LCM_BANKACCOUNTID    ,LCM_ISSUANCECITYID,LCM_DATEOFISSUANCE,LCM_EXPIRYCITYID,LCM_DATEOFEXPIRY,LCM_LCCONDITION,LCM_LCANO,  
+LCM_IRCNO,LCM_TIN,LCM_VAT,  
+LCM_INSSURANCECOM,LCM_INSSURANCECOMADD,LCM_INSSURANCECOMNOTENO,[LCM_INSSURANCEDATE]        ,[LCM_PREMIUMVALUE],[LCM_PREMIUMCURRENCY],LCM_HSCODE   ,HSODE_ID,LCM_PORTOFDISSCHARGE,GETDATE(),  
+LCM_CREATIONUSERID,LCM_SPECIALCOMMENTS,LCM_ITEMID,LCM_MODOFSHIPMENT,LCM_PORTOFSHIPMENT,LCM_DATEOFSHIPMENT,LCM_CONTRY_ORIGIN,LCM_PIValue,LOM_ID ,Currency,LCM_PAYMENT_MOD  
+,LCM_FREIGHT_TERM,LCM_NEGOTIATION_TERM,LCM_PARTIAL_SHIPMENT,LCM_TRANS_SHIPMENT,LCM_BIN_NO  ,LCM_INSSURANCECOMPH,LCM_GRM_QTY,LCM_GRM_QTY_Number,(select LMT_ID from LC_OM_ORDER_MASTER where lom_id=x.LOM_ID), P_Days                                                  
+  
+  
+  
+           
+ FROM                                    
+ OPENXML (@idoc,'XMLDOC/LCNumber/.',3)                                    
+ WITH (                            
+           LCM_CODE varchar(50) '.',                                    
+           LCM_MODUSERID smallint '../MOD_User',                                    
+           LCM_LASTMODDATE varchar(12) '../MOD_Date',                                    
+           LCM_VENDOR_ID int '../SupplierID',                                    
+           LCM_COMPANY_ID int '../Company',                                    
+           LCM_COMPANYBANK_ID int '../Bank',                            
+           LCM_BANKACCOUNTID int '../Account',                                    
+           LCM_ISSUANCECITYID int '../PlcIssue',                                    
+           LCM_DATEOFISSUANCE varchar(12) '../ISSUE-DATE',                                    
+       LCM_EXPIRYCITYID int '../PlcExpiry',                                    
+           LCM_DATEOFEXPIRY varchar(12) '../EXP-DATE',                                    
+           LCM_LCCONDITION int '../LCConditions',                                    
+           LCM_LCANO varchar(50) '../LCANo',                                    
+           LCM_IRCNO varchar(50) '../IRCNo',  
+LCM_TIN varchar(max) '../TIN',   
+LCM_VAT varchar(max) '../VAT',                                     
+           LCM_INSSURANCECOM varchar(50) '../InsuranceCom',                                
+           LCM_INSSURANCECOMADD varchar(50) '../InsuranceCoAdd',          
+   LCM_INSSURANCECOMPH varchar(50) '../InsurranceCompanyPhone',                                   
+           LCM_INSSURANCECOMNOTENO varchar(50) '../InsurranceCovNote',    
+     [LCM_INSSURANCEDATE] varchar(12)'../ICDate',  
+           [LCM_PREMIUMVALUE] float '../IPremium',  
+           [LCM_PREMIUMCURRENCY] int '../IPremiumCurr',                                  
+           LCM_HSCODE varchar(50) '../HSCode',                                    
+           HSODE_ID int '../HSCodeID',                                    
+           LCM_PORTOFDISSCHARGE varchar(50) '../PointOfDischarge',                                    
+           LCM_CREATIONUSERID int '../MOD_User',                                    
+           LCM_SPECIALCOMMENTS varchar(MAX) '../CMNT'                                    
+           , LCM_ITEMID INT '../ItemID'                                    
+           ,LCM_PORTOFSHIPMENT VARCHAR(50) '../PortOfShipment'                                    
+           ,LCM_MODOFSHIPMENT VARCHAR(50) '../ModeOfShipment'                  
+           ,LCM_DATEOFSHIPMENT varchar(12) '../SHIP-DATE'                                    
+           ,LCM_CONTRY_ORIGIN VARCHAR(50) '../COORGN'                
+           ,LCM_PIValue decimal(18,6) '../PIV'                                 
+,LOM_ID int  '../MLCID' ,                                  
+Currency int '../Currency',              
+LCM_PAYMENT_MOD varchar(max) '../PaymentMod',              
+LCM_FREIGHT_TERM varchar(3) '../FreightTerm',              
+LCM_NEGOTIATION_TERM varchar(15) '../NegotiationTerm' ,              
+LCM_PARTIAL_SHIPMENT bit '../PartialShipment',              
+LCM_TRANS_SHIPMENT bit '../TransShipment' ,            
+LCM_BIN_NO VARCHAR(50) '../BINNO'  ,        
+LCM_GRM_QTY varchar(100) '../GAR-Des' ,  
+LCM_GRM_QTY_Number int '../GAR-QTY',
+P_Days int '../days'                                                       
+        ) x                                   
+  
+  DECLARE @IID int                                    
+  SET @IID = @@IDENTITY                                    
+                                      
+   INSERT INTO LC_CPF_CASH_PURCHASEORDERS_Fabric (LCM_ID,LCPF_POID,LCPF_VPI,LCPF_PIDATE,                          
+              LCPF_CURRENCYID, LCPF_CONVERSIONRATE)                                    
+   SELECT @IID , PurchaseOrder, VPI,Convert(varchar(12),VPIDATE,103),CurrencyID,convert(float(4),ConversionRate)                                    
+   FROM                                    
+   OPENXML ( @idoc , 'XMLDOC/POXML/PurchaseOrder/.' , 3 )            
+   WITH                                    
+   (                                    
+    PurchaseOrder int '.',VPI varchar(50) '@VPI',                              
+    VPIDATE varchar(12) '@VPIDATE',CurrencyID int '@CurrencyID',                              
+    ConversionRate varchar(50) '@ConversionRate'                                     
+   )                                   
+                                      
+ --)                               
+                               
+     declare @LOMID bigint                                    
+ set @LOMID= (SELECT LOMID                                         
+ FROM                                            
+ OPENXML (@idoc,'XMLDOC/MLCID',3)                                 
+ WITH (                                    
+ LOMID bigint '.'                                    
+))                           
+                               
+ INSERT INTO lc_debug VALUES ('CashFabric' , @Doc )                                   
+                                    
+--   EXEC GetBalanceQuantity @LOMID,@IID,1                 
+   EXEC GetBalanceQuantityNew @LOMID,@IID,1                                 
+      
+                                   
+END       
+      
+COMMIT TRANSACTION;      
+select 'Saving Done'      
+END TRY      
+BEGIN CATCH      
+      
+    ROLLBACK TRANSACTION;      
+ select 'Error in Saving'      
+END CATCH;  

@@ -1,0 +1,27 @@
+Declare @hdoc int
+Declare @Doc xml
+
+Set @Doc = '<supplier><name>a</name><address>dhaka</address></supplier>'
+
+
+ExEC sp_xml_prepareDocument @hdoc output, @Doc
+
+Select @hdoc
+
+
+
+
+Declare @idoc int
+Set @idoc = 1
+
+insert into Supplier 
+
+Select t.name, t.address   from OPENXML(@idoc,'/supplier',3)
+with(
+	name nvarchar(50),
+	address nvarchar(50)
+	
+)t
+
+
+

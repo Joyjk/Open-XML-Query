@@ -1,0 +1,3 @@
+http://192.168.9.7/erp/LCM/V2/MainFrame.php?UserXML=<User><ID>1095</ID><Language>1</Language><Name>bitol</Name><DomainID>119</DomainID><SubDomainID>1</SubDomainID><CompanyID>183</CompanyID><FullName>bitol</FullName><BusinessID>6</BusinessID></User>#
+
+http://192.168.9.7/erp/LCM/LC_ALL_TT_Report_View.php?bank=Prime Bank Limited

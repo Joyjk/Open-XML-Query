@@ -1,0 +1,27 @@
+
+Create Trigger TR_DeleteTry ON CustomerDetails
+FOR DELETE 
+as
+Begin
+
+Set NOCOUNT ON;
+ 
+Declare @c_id int 
+Declare @name nvarchar(50)
+Declare @country nvarchar(50)
+
+Select @c_id = deleted.customerid, @name = deleted.name, @country=deleted.country from  deleted
+
+	Insert INTO testbackup (name,country) 
+	values (@name,@country)
+
+end
+
+
+----https://www.aspsnippets.com/Articles/SQL-Server-Insert-data-to-another-Table-using-Insert-Update-and-Delete-Triggers.aspx
+
+
+
+----https://www.edureka.co/blog/triggers-in-sql/
+----https://stackoverflow.com/questions/7763369/sql-server-trigger-insert-the-deleted-record-into-another-table-with-deletetim
+

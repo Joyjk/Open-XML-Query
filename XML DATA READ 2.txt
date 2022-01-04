@@ -1,0 +1,33 @@
+<%
+Set xml = Server.CreateObject("MSXML2.ServerXMLHTTP")
+url = "http://localhost/trydropdown/retrivedata.asp" & filename
+xml.Open "GET", url, False
+xml.Send
+redim arr(0)
+Set NodeList = xml.responseXml.selectNodes("Customers")
+
+For Each objChild In NodeList
+    if objChild.hasChildNodes() then
+        dim i, flag, total
+        total=0
+        i=0
+        flag=0
+        do while (total<objChild.childNodes.length and flag=0)
+            if objChild.childNodes(i).text="" then
+                flag=1
+            end if
+            total=total+1
+        loop
+        flag=0
+        response.write "total: "&total
+        redim arr(total)
+        do while (i<total)
+            arr(i)=objChild.childNodes(i).text
+            'Response.Write(arr(0))
+            i=i+1
+        loop
+      end if
+      Response.Write(arr(0))
+next
+
+%>

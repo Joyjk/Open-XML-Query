@@ -1,0 +1,10 @@
+
+Create Proc spPurchaseThreeSupplierDetails
+as
+
+Select PurchaseThree.parts_id, Parts.parts_id_sku, Parts.name as parts_name, PurchaseThree.supplier_id , Supplier.name as supplier_name
+from Parts, PurchaseThree, Supplier 
+where PurchaseThree.parts_id = Parts.parts_id_sku and PurchaseThree.supplier_id = Supplier.supplier_id
+For XML PATH('purchase'), Root('purchases')
+
+GO

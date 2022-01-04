@@ -1,0 +1,1 @@
+select name, roll from Users where name = 'Sumon' and password = '12345' and roll = 'supervisor' FOR XML PATH('user'), Root('users')

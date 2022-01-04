@@ -1,0 +1,2 @@
+SELECT Parts.name as Parts_name, Parts.price, Parts.quantity,Parts.parts_id_sku, Stock.parts_id from Parts,Stock 
+Where Parts.parts_id_sku = Stock.parts_id

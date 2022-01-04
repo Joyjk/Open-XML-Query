@@ -1,0 +1,1 @@
+EXEC spUpdatePartPurchaseStock @dataxml = '<purchase><parts_id>4</parts_id><supplier_id>3</supplier_id><quantity>3</quantity><cost>600000</cost><user_id>8</user_id><update_quantity>1</update_quantity></purchase>'

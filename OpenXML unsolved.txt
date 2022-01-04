@@ -1,0 +1,40 @@
+Declare @hdoc int
+Declare @Doc xml
+
+Set @Doc = '<Customers>
+ <Customer Id ="1" Age="25">
+    <Name>John Hammond11</Name> 
+    <Country>United States22</Country>
+ </Customer>
+ <Customer Id = "2" Age="26">
+    <Name>Mudassar Khan33</Name>
+    <Country>Bangladesh22</Country>
+ </Customer>
+    <Customer Id ="3" Age="27">
+    <Name>Suzanne Mathews55</Name>
+    <Country>France55</Country>
+ </Customer>
+    <Customer Id ="4" Age="28">
+    <Name>Robert Schidner22</Name>
+    <Country>Russia22</Country>
+ </Customer>
+</Customers>'
+
+ExEC sp_xml_prepareDocument @hdoc output, @Doc
+
+Select @hdoc
+
+Declare @idoc int
+Set @idoc = 3
+
+Select * from OPENXML(@idoc,'/Customers/Customer/Name',3)
+WITH(
+ Id int '../@Id',
+ Age int '../@Age',
+ Name varchar(MAX) '@Name',
+ Country varchar(MAX) '@Country'
+ 
+)
+
+
+----EXEC sp_xml_removedocument 1
